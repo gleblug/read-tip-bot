@@ -11,21 +11,21 @@ import (
 )
 
 type Client struct {
-	host string
+	host     string
 	basePath string
-	client http.Client
+	client   http.Client
 }
 
 const (
-	getUpdatesMethod = "getUpdates"
+	getUpdatesMethod  = "getUpdates"
 	sendMessageMethod = "sendMessage"
 )
 
 func New(host string, token string) Client {
 	return Client{
-		host: host,
+		host:     host,
 		basePath: newBasePath(token),
-		client: http.Client{},
+		client:   http.Client{},
 	}
 }
 
@@ -61,7 +61,7 @@ func (c *Client) SendMessage(chatID int, text string) error {
 
 	_, err := c.doRequest(sendMessageMethod, q)
 	if err != nil {
-		return e.Wrap("can't send message", err) 
+		return e.Wrap("can't send message", err)
 	}
 
 	return nil
@@ -72,8 +72,8 @@ func (c *Client) doRequest(method string, query url.Values) (data []byte, err er
 
 	u := url.URL{
 		Scheme: "https",
-		Host: c.host,
-		Path: path.Join(c.basePath, method),
+		Host:   c.host,
+		Path:   path.Join(c.basePath, method),
 	}
 
 	req, err := http.NewRequest(http.MethodGet, u.String(), nil)

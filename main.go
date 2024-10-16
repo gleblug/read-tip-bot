@@ -6,7 +6,6 @@ import (
 	"read-tip-bot/clients/telegram"
 )
 
-
 func main() {
 	host, token := mustParseFlags()
 	_ = telegram.New(host, token)
