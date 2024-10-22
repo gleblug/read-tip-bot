@@ -2,6 +2,7 @@ package storage
 
 import (
 	"crypto/sha1"
+	"errors"
 	"fmt"
 	"io"
 	"read-tip-bot/lib/e"
@@ -19,6 +20,10 @@ type Page struct {
 	UserName string
 	// Added time.Time
 }
+
+var (
+	ErrNoSavedPages = errors.New("no saved pages")
+)
 
 func (p Page) Hash() (string, error) {
 	h := sha1.New()
