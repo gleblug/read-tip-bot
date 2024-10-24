@@ -1,8 +1,8 @@
 package main
 
 import (
-	"flag"
 	"log"
+	"os"
 	tgClient "read-tip-bot/clients/telegram"
 	"read-tip-bot/consumer/event_consumer"
 	"read-tip-bot/events/telegram"
@@ -11,10 +11,11 @@ import (
 
 const (
 	batchSize = 100
+	host = "api.telegram.org"
 )
 
 func main() {
-	host, token, storagePath := mustParseFlags()
+	token, storagePath := mustVariables()
 
 	eventsProcessor := telegram.New(
 		tgClient.New(host, token),
@@ -29,22 +30,16 @@ func main() {
 	}
 }
 
-func mustParseFlags() (string, string, string) {
-	host := flag.String("h", "", "telegram api host")
-	token := flag.String("t", "", "token for access to telegram bot")
-	storagePath := flag.String("p", "", "storage path")
+func mustVariables() (string, string) {
+	token := os.Getenv("TELEGRAM_API_KEY")
+	storagePath := os.Getenv("READ_TIP_BOT_STORAGE")
 
-	flag.Parse()
-
-	if *token == "" {
-		log.Fatal("token is not specified")
+	if token == "" {
+		log.Fatal("TELEGRAM_API_KEY is not specified")
 	}
-	if *host == "" {
-		log.Fatal("host is not specified")
-	}
-	if *storagePath == "" {
-		log.Fatal("storage path is not specified")
+	if storagePath == "" {
+		log.Fatal("READ_TIP_BOT_STORAGE is not specified")
 	}
 
-	return *host, *token, *storagePath
+	return token, storagePath
 }
