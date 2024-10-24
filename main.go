@@ -11,7 +11,7 @@ import (
 
 const (
 	batchSize = 100
-	host = "api.telegram.org"
+	host      = "api.telegram.org"
 )
 
 func main() {
